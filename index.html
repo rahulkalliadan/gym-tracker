@@ -537,12 +537,13 @@ function renderSplitGrid(){
 }
 
 function getLastWeights(exName){
-  // Find the most recent session that has this exercise
-  // excluding current date so "last" means last time, not today
+  // Only show last weights from the SAME split
+  // so Push day shows Push weights, Upper day shows Upper weights
   const sessions=getUniqueSessions();
   for(let i=sessions.length-1;i>=0;i--){
     const s=sessions[i];
     if(s.date.split('T')[0]===selDate)continue; // skip today
+    if(s.split!==selSplit)continue; // only same split
     if(s.sets&&s.sets[exName]){const sets=s.sets[exName].filter(x=>x&&x.weight);if(sets.length)return{sets,date:s.date};}
   }
   return null;
